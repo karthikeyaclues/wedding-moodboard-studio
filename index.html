@@ -6,119 +6,873 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Wedding Moodboard Studio</title>
 <style>
+:root {
+  --paper: #f5f2eb;
+  --white: #fffefa;
+  --ink: #292720;
+  --muted: #858078;
+  --line: #ded9ce;
+  --accent: #9a8066;
+  --serif: Georgia, "Times New Roman", serif;
+  --sans: Arial, sans-serif;
+}
 * { box-sizing: border-box; }
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f7f5f0;
-  color: #292720;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
 }
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
 header {
-  padding: 25px 7%;
-  border-bottom: 1px solid #ddd8ce;
+  height: 76px;
+  padding: 0 5%;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--paper);
+}
+.brand {
+  font-family: var(--serif);
+  font-size: 22px;
+  letter-spacing: 1px;
+}
+.brand small {
+  display: block;
+  font: 9px var(--sans);
+  letter-spacing: 3px;
+  margin-top: 5px;
+  color: var(--muted);
+}
+.header-right {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--muted);
+}
+main { max-width: 1450px; margin: auto; padding: 45px 5%; }
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+h1 {
+  font: normal clamp(35px, 6vw, 64px)/1.1 var(--serif);
+  margin: 12px 0;
+}
+.intro {
+  color: var(--muted);
+  font: 16px/1.7 var(--serif);
+}
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 35px 0 25px;
+}
+select, input, textarea {
+  background: var(--white);
+  border: 1px solid var(--line);
+  padding: 12px;
+  color: var(--ink);
+  border-radius: 2px;
+  min-width: 0;
+}
+select { max-width: 220px; }
+.btn {
+  background: var(--ink);
+  color: white;
+  border: 1px solid var(--ink);
+  padding: 12px 18px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.btn.light {
+  background: transparent;
+  color: var(--ink);
+}
+.btn:hover { opacity: .8; }
+.view-switch {
+  display: flex;
+  margin-left: auto;
+  border: 1px solid var(--line);
+}
+.view-switch button {
+  border: 0;
+  padding: 12px 15px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 11px;
+}
+.view-switch button.active {
+  background: var(--ink);
+  color: white;
+}
+.panel {
+  background: var(--white);
+  border: 1px solid var(--line);
+  padding: 28px;
+  margin-bottom: 24px;
+}
+.panel-title {
+  font: 25px var(--serif);
+  margin: 0 0 20px;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 15px;
+}
+.field label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.field input, .field select, .field textarea {
+  width: 100%;
+}
+.field.full { grid-column: 1/-1; }
+textarea { resize: vertical; }
+.upload-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 18px;
+}
+input[type=file] { max-width: 100%; font-size: 12px; }
+.section-heading {
   display: flex;
   justify-content: space-between;
-}
-h1 { font-family: Georgia, serif; font-weight: normal; }
-main { padding: 45px 7%; }
-.subtitle { color: #777; }
-button {
-  background: #292720;
-  color: white;
-  border: 0;
-  padding: 12px 20px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-input {
-  padding: 13px;
-  border: 1px solid #ccc;
-  width: 100%;
-  margin: 8px 0 15px;
-}
-.board {
-  background: white;
-  padding: 20px;
-  margin-top: 30px;
-  border-radius: 8px;
-}
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
+  align-items: center;
   gap: 15px;
-  margin-top: 20px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 14px;
+  margin: 35px 0 20px;
 }
-.gallery img {
+.section-heading h2 {
+  font: 26px var(--serif);
+  margin: 0;
+}
+.section-heading span {
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+.meta {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.8;
+}
+.canvas {
+  position: relative;
+  min-height: 720px;
+  background: #eeeae1;
+  border: 1px solid var(--line);
+  overflow: hidden;
+  padding: 20px;
+}
+.canvas.empty {
+  display: grid;
+  place-items: center;
+}
+.empty-message {
+  text-align: center;
+  color: var(--muted);
+  font: italic 20px var(--serif);
+}
+.free-card {
+  position: absolute;
+  width: 215px;
+  background: white;
+  padding: 8px;
+  box-shadow: 0 3px 14px #00000012;
+  touch-action: none;
+}
+.free-card.dragging { z-index: 50; opacity: .85; }
+.free-card img {
   width: 100%;
-  height: 220px;
+  height: 205px;
   object-fit: cover;
-  border-radius: 5px;
+  display: block;
+  pointer-events: none;
+}
+.drag-handle {
+  font-size: 10px;
+  color: var(--muted);
+  padding: 7px 2px;
+  cursor: grab;
+}
+.card-info { padding: 8px 2px 2px; }
+.card-info input, .card-info select {
+  width: 100%;
+  padding: 7px;
+  font-size: 11px;
+  margin-top: 5px;
+}
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+}
+.card-actions button {
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  font-size: 11px;
+  padding: 5px;
+}
+.grid-view {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 16px;
+}
+.grid-card {
+  background: white;
+  border: 1px solid var(--line);
+  padding: 9px;
+  min-width: 0;
+}
+.grid-card img {
+  width: 100%;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  display: block;
+}
+.grid-card .card-info { padding: 10px 2px 2px; }
+.grid-card .card-info input,
+.grid-card .card-info select { width: 100%; }
+.palette {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+.swatch { width: 85px; text-align: center; }
+.swatch input[type=color] {
+  width: 70px;
+  height: 65px;
+  padding: 3px;
+  border: 1px solid var(--line);
+  background: white;
+  cursor: pointer;
+}
+.swatch input[type=text] {
+  width: 85px;
+  padding: 5px;
+  font-size: 10px;
+  text-align: center;
+  margin-top: 5px;
+}
+.swatch button {
+  border: 0;
+  background: transparent;
+  font-size: 10px;
+  color: var(--muted);
+  padding: 5px;
+}
+.notes {
+  width: 100%;
+  min-height: 100px;
+  line-height: 1.6;
+}
+footer {
+  padding: 35px 5%;
+  border-top: 1px solid var(--line);
+  text-align: center;
+  font: italic 14px var(--serif);
+  color: var(--muted);
+}
+.hidden { display: none !important; }
+@media(max-width:700px) {
+  main { padding: 30px 5%; }
+  header { padding: 0 5%; height: 65px; }
+  .brand { font-size: 17px; }
+  .header-right { font-size: 8px; }
+  .panel { padding: 18px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .field.full { grid-column: auto; }
+  .toolbar { gap: 7px; }
+  .toolbar .btn { padding: 10px; font-size: 9px; }
+  .view-switch { margin-left: 0; }
+  .grid-view { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .free-card { width: 160px; }
+  .free-card img { height: 165px; }
+  .canvas { min-height: 650px; }
+  .swatch { width: 75px; }
+  .swatch input[type=text] { width: 75px; }
+}
+@media print {
+  body { background: white; }
+  header, .toolbar, .panel, .section-heading .no-print,
+  .card-info input, .card-info select,
+  .card-actions, .drag-handle, footer { display: none !important; }
+  main { padding: 10px; max-width: none; }
+  h1 { font-size: 36px; }
+  .canvas {
+    background: white;
+    border: 0;
+    min-height: 700px;
+    overflow: visible;
+  }
+  .free-card { box-shadow: none; }
+  .grid-card { break-inside: avoid; }
+  .grid-view { grid-template-columns: repeat(3,1fr); }
+  .print-palette { display: flex !important; }
 }
 </style>
 </head>
 <body>
 
 <header>
-  <strong>MOODBOARD STUDIO</strong>
-  <span>Creative workspace</span>
+  <div class="brand">
+    MOODBOARD STUDIO
+    <small>THE CREATIVE WORKSPACE</small>
+  </div>
+  <div class="header-right">A STUDY IN VISUAL STORIES</div>
 </header>
 
 <main>
-  <p class="subtitle">YOUR CREATIVE SPACE</p>
-  <h1>Wedding Moodboard Studio</h1>
-  <p class="subtitle">
-    Build visual stories. Plan beautiful weddings.
-  </p>
+  <p class="eyebrow">Creative direction / Wedding photography</p>
+  <h1>Wedding Moodboard<br>Studio.</h1>
+  <p class="intro">A space to collect references, explore aesthetics<br>and build visual stories.</p>
 
-  <section class="board">
-    <h2>Create your moodboard</h2>
+  <div class="toolbar">
+    <select id="projectSelect" aria-label="Select project"></select>
+    <button class="btn" onclick="newProject()">+ New project</button>
+    <button class="btn light" onclick="renameProject()">Rename</button>
+    <button class="btn light" onclick="deleteProject()">Delete</button>
+    <div class="view-switch">
+      <button id="freeBtn" class="active" onclick="setView('free')">Freeform</button>
+      <button id="gridBtn" onclick="setView('grid')">Editorial grid</button>
+    </div>
+  </div>
 
-    <label>Project / Couple Name</label>
-    <input id="project" placeholder="e.g. Rahul & Ananya">
-
-    <label>Creative Direction</label>
-    <input id="direction" placeholder="e.g. Editorial, cinematic, intimate">
-
-    <label>Reference Image URL</label>
-    <input id="imageUrl" placeholder="Paste an image URL">
-
-    <button onclick="addReference()">Add Reference</button>
-
-    <div id="gallery" class="gallery"></div>
+  <section class="panel">
+    <h2 class="panel-title">Project details</h2>
+    <div class="form-grid">
+      <div class="field">
+        <label>Couple / Project name</label>
+        <input id="projectName" placeholder="Rahul & Ananya">
+      </div>
+      <div class="field">
+        <label>Creative direction</label>
+        <input id="direction" placeholder="Editorial / cinematic / intimate">
+      </div>
+      <div class="field">
+        <label>Wedding / Shoot date</label>
+        <input id="shootDate" type="date">
+      </div>
+      <div class="field">
+        <label>Location</label>
+        <input id="location" placeholder="Hyderabad, India">
+      </div>
+      <div class="field full">
+        <label>Creative brief</label>
+        <textarea id="brief" rows="3" placeholder="Describe the story, mood, lighting, styling and visual approach..."></textarea>
+      </div>
+    </div>
   </section>
+
+  <div class="section-heading">
+    <h2>Visual references</h2>
+    <span id="imageCount">00 IMAGES</span>
+  </div>
+
+  <section class="panel">
+    <div class="field">
+      <label>Upload reference photographs</label>
+      <input type="file" id="imageUpload" accept="image/*" multiple>
+    </div>
+    <div class="upload-row">
+      <span class="meta">You can select multiple images from your phone.</span>
+    </div>
+    <div class="field" style="margin-top:18px">
+      <label>Or add an image URL</label>
+      <input id="imageUrl" type="url" placeholder="https://example.com/image.jpg">
+      <button class="btn light" style="margin-top:10px" onclick="addUrl()">Add image URL</button>
+    </div>
+  </section>
+
+  <div class="section-heading">
+    <h2>Your canvas</h2>
+    <span id="viewLabel">FREEFORM ARRANGEMENT</span>
+  </div>
+
+  <div id="canvas" class="canvas empty">
+    <div class="empty-message" id="emptyMessage">
+      Your visual story begins here.
+      <br><small>Upload photographs to start arranging.</small>
+    </div>
+  </div>
+
+  <section class="panel" style="margin-top:25px">
+    <div class="section-heading" style="margin-top:0">
+      <h2>Colour story</h2>
+      <span>YOUR PALETTE</span>
+    </div>
+    <div id="palette" class="palette"></div>
+    <button class="btn light" onclick="addColour()" style="margin-top:18px">+ Add colour</button>
+  </section>
+
+  <section class="panel">
+    <h2 class="panel-title">Creative notes</h2>
+    <textarea id="notes" class="notes" placeholder="Lighting references, posing ideas, wardrobe, composition, shot inspiration..."></textarea>
+  </section>
+
+  <div class="toolbar">
+    <button class="btn" onclick="saveProject()">Save project</button>
+    <button class="btn light" onclick="exportPDF()">Export / Print PDF</button>
+  </div>
+  <p class="meta" id="saveStatus">Changes are saved automatically in this browser.</p>
 </main>
 
-<script>
-function addReference() {
-  const url = document.getElementById("imageUrl").value.trim();
-  const gallery = document.getElementById("gallery");
+<footer>Made for visual storytellers. &nbsp; — &nbsp; Moodboard Studio</footer>
 
-  if (!url) {
-    alert("Please enter an image URL.");
+<script>
+const KEY = "moodboard_studio_v2";
+const categories = ["Bride","Groom","Couple","Details","Decor","Candid","Fashion","Venue","Other"];
+
+let projects = [];
+let currentId = null;
+let view = "free";
+let drag = null;
+let saveTimer;
+
+function uid() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+}
+
+function createProject(name) {
+  return {
+    id: uid(),
+    name: name || "Untitled project",
+    direction: "",
+    date: "",
+    location: "",
+    brief: "",
+    notes: "",
+    images: [],
+    palette: ["#E8DFD0","#B7A18A","#83715E","#554C43","#F4F0E8"]
+  };
+}
+
+function current() {
+  return projects.find(p => p.id === currentId);
+}
+
+function load() {
+  try {
+    projects = JSON.parse(localStorage.getItem(KEY)) || [];
+  } catch(e) {
+    projects = [];
+  }
+  if (!projects.length) projects = [createProject("My first moodboard")];
+  currentId = projects[0].id;
+  renderAll();
+  persist(false);
+}
+
+function persist(showStatus=true) {
+  try {
+    localStorage.setItem(KEY, JSON.stringify(projects));
+    if (showStatus) {
+      document.getElementById("saveStatus").textContent =
+        "Saved in this browser · " + new Date().toLocaleTimeString();
+    }
+  } catch(e) {
+    document.getElementById("saveStatus").textContent =
+      "Storage is full. Remove some large images and try again.";
+  }
+}
+
+function scheduleSave() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => persist(), 400);
+}
+
+function renderSelect() {
+  const s = document.getElementById("projectSelect");
+  s.innerHTML = "";
+  projects.forEach(p => {
+    const o = document.createElement("option");
+    o.value = p.id;
+    o.textContent = p.name;
+    s.appendChild(o);
+  });
+  s.value = currentId;
+}
+
+function renderDetails() {
+  const p = current();
+  if (!p) return;
+  projectName.value = p.name;
+  direction.value = p.direction;
+  shootDate.value = p.date;
+  location.value = p.location;
+  brief.value = p.brief;
+  notes.value = p.notes;
+}
+
+function renderPalette() {
+  const el = document.getElementById("palette");
+  el.innerHTML = "";
+  current().palette.forEach((colour,i) => {
+    const item = document.createElement("div");
+    item.className = "swatch";
+
+    const picker = document.createElement("input");
+    picker.type = "color";
+    picker.value = colour;
+    picker.addEventListener("input", e => {
+      current().palette[i] = e.target.value;
+      scheduleSave();
+    });
+
+    const code = document.createElement("input");
+    code.type = "text";
+    code.value = colour;
+    code.maxLength = 7;
+    code.addEventListener("change", e => {
+      if (/^#[0-9a-f]{6}$/i.test(e.target.value)) {
+        current().palette[i] = e.target.value;
+        renderPalette();
+        scheduleSave();
+      }
+    });
+
+    const remove = document.createElement("button");
+    remove.textContent = "Remove";
+    remove.onclick = () => {
+      current().palette.splice(i,1);
+      renderPalette();
+      scheduleSave();
+    };
+
+    item.append(picker,code,remove);
+    el.appendChild(item);
+  });
+}
+
+function addColour() {
+  current().palette.push("#C9B9A5");
+  renderPalette();
+  scheduleSave();
+}
+
+function categorySelect(img) {
+  const s = document.createElement("select");
+  categories.forEach(c => {
+    const o = document.createElement("option");
+    o.value = c;
+    o.textContent = c;
+    s.appendChild(o);
+  });
+  s.value = img.category || "Other";
+  s.onchange = () => {
+    img.category = s.value;
+    scheduleSave();
+  };
+  return s;
+}
+
+function makeCard(img,index) {
+  const card = document.createElement("article");
+  card.className = view === "free" ? "free-card" : "grid-card";
+
+  if (view === "free") {
+    card.style.left = (img.x ?? 20 + (index%3)*225) + "px";
+    card.style.top = (img.y ?? 20 + Math.floor(index/3)*300) + "px";
+  }
+
+  const image = document.createElement("img");
+  image.src = img.src;
+  image.alt = img.caption || "Wedding inspiration reference";
+
+  card.appendChild(image);
+
+  const info = document.createElement("div");
+  info.className = "card-info";
+
+  const category = categorySelect(img);
+  info.appendChild(category);
+
+  const caption = document.createElement("input");
+  caption.placeholder = "Add a caption...";
+  caption.value = img.caption || "";
+  caption.addEventListener("input", () => {
+    img.caption = caption.value;
+    scheduleSave();
+  });
+  info.appendChild(caption);
+
+  const actions = document.createElement("div");
+  actions.className = "card-actions";
+
+  const left = document.createElement("button");
+  left.textContent = "↑";
+  left.title = "Move earlier in editorial grid";
+  left.onclick = () => moveImage(index,-1);
+
+  const right = document.createElement("button");
+  right.textContent = "↓";
+  right.title = "Move later in editorial grid";
+  right.onclick = () => moveImage(index,1);
+
+  const remove = document.createElement("button");
+  remove.textContent = "Remove ×";
+  remove.onclick = () => {
+    if (confirm("Remove this reference?")) {
+      current().images.splice(index,1);
+      renderCanvas();
+      persist();
+    }
+  };
+
+  actions.append(left,right,remove);
+  info.appendChild(actions);
+  card.appendChild(info);
+
+  if (view === "free") {
+    const handle = document.createElement("div");
+    handle.className = "drag-handle";
+    handle.textContent = "↕ DRAG TO ARRANGE";
+    card.insertBefore(handle,image);
+    handle.addEventListener("pointerdown", e => startDrag(e,card,img));
+  }
+
+  return card;
+}
+
+function renderCanvas() {
+  const canvas = document.getElementById("canvas");
+  canvas.innerHTML = "";
+  const imgs = current().images;
+
+  document.getElementById("imageCount").textContent =
+    String(imgs.length).padStart(2,"0") + " IMAGES";
+
+  canvas.classList.toggle("empty",imgs.length===0);
+
+  if (!imgs.length) {
+    const msg = document.createElement("div");
+    msg.className = "empty-message";
+    msg.innerHTML = "Your visual story begins here.<br><small>Upload photographs to start arranging.</small>";
+    canvas.appendChild(msg);
     return;
   }
 
+  canvas.classList.toggle("free-canvas",view==="free");
+  if (view === "grid") {
+    canvas.classList.remove("empty");
+    canvas.classList.add("grid-view");
+  } else {
+    canvas.classList.remove("grid-view");
+  }
+
+  imgs.forEach((img,i) => canvas.appendChild(makeCard(img,i)));
+}
+
+function startDrag(e,card,img) {
+  e.preventDefault();
+  const rect = card.getBoundingClientRect();
+  const canvasRect = document.getElementById("canvas").getBoundingClientRect();
+  drag = {
+    card,img,
+    offsetX:e.clientX-rect.left,
+    offsetY:e.clientY-rect.top,
+    canvasRect
+  };
+  card.classList.add("dragging");
+  card.setPointerCapture(e.pointerId);
+  card.addEventListener("pointermove",moveDrag);
+  card.addEventListener("pointerup",endDrag,{once:true});
+  card.addEventListener("pointercancel",endDrag,{once:true});
+}
+
+function moveDrag(e) {
+  if (!drag) return;
+  const x = e.clientX-drag.canvasRect.left-drag.offsetX;
+  const y = e.clientY-drag.canvasRect.top-drag.offsetY;
+  drag.card.style.left = Math.max(0,x)+"px";
+  drag.card.style.top = Math.max(0,y)+"px";
+}
+
+function endDrag() {
+  if (!drag) return;
+  const card = drag.card;
+  const img = drag.img;
+  img.x = parseFloat(card.style.left);
+  img.y = parseFloat(card.style.top);
+  card.classList.remove("dragging");
+  card.removeEventListener("pointermove",moveDrag);
+  drag = null;
+  scheduleSave();
+}
+
+function moveImage(index,step) {
+  const imgs = current().images;
+  const target = index+step;
+  if (target<0 || target>=imgs.length) return;
+  [imgs[index],imgs[target]] = [imgs[target],imgs[index]];
+  renderCanvas();
+  scheduleSave();
+}
+
+function setView(v) {
+  view = v;
+  document.getElementById("freeBtn").classList.toggle("active",v==="free");
+  document.getElementById("gridBtn").classList.toggle("active",v==="grid");
+  document.getElementById("viewLabel").textContent =
+    v==="free" ? "FREEFORM ARRANGEMENT" : "EDITORIAL GRID";
+  renderCanvas();
+}
+
+function resizeImage(file) {
+  return new Promise((resolve,reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const image = new Image();
+      image.onload = () => {
+        const max = 1500;
+        const scale = Math.min(1,max/Math.max(image.width,image.height));
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.round(image.width*scale);
+        canvas.height = Math.round(image.height*scale);
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(image,0,0,canvas.width,canvas.height);
+        resolve(canvas.toDataURL("image/jpeg",0.78));
+      };
+      image.onerror = reject;
+      image.src = reader.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+document.getElementById("imageUpload").addEventListener("change",async e => {
+  const files = Array.from(e.target.files || []);
+  const p = current();
+  for (const file of files) {
+    if (!file.type.startsWith("image/")) continue;
+    try {
+      const src = await resizeImage(file);
+      p.images.push({
+        id:uid(),src,category:"Other",caption:"",
+        x:20+(p.images.length%3)*225,
+        y:20+Math.floor(p.images.length/3)*300
+      });
+      renderCanvas();
+      persist();
+    } catch(err) {
+      alert("Could not load " + file.name);
+    }
+  }
+  e.target.value = "";
+});
+
+function addUrl() {
+  const field = document.getElementById("imageUrl");
+  const url = field.value.trim();
+  if (!url) return alert("Paste an image URL first.");
   try {
     const parsed = new URL(url);
-    if (!["http:", "https:"].includes(parsed.protocol)) {
-      throw new Error("Invalid URL");
-    }
-
-    const img = document.createElement("img");
-    img.src = parsed.href;
-    img.alt = "Moodboard reference";
-    img.onerror = () => {
-      alert("Image could not be loaded. Try another image URL.");
-      img.remove();
-    };
-
-    gallery.appendChild(img);
-    document.getElementById("imageUrl").value = "";
-  } catch {
-    alert("Please enter a valid image URL.");
+    if (!["http:","https:"].includes(parsed.protocol)) throw new Error();
+    current().images.push({
+      id:uid(),src:parsed.href,category:"Other",caption:"",
+      x:20+(current().images.length%3)*225,
+      y:20+Math.floor(current().images.length/3)*300
+    });
+    field.value = "";
+    renderCanvas();
+    persist();
+  } catch(e) {
+    alert("Please enter a valid HTTP or HTTPS image URL.");
   }
 }
-</script>
 
+function renderAll() {
+  renderSelect();
+  renderDetails();
+  renderPalette();
+  renderCanvas();
+}
+
+document.getElementById("projectSelect").addEventListener("change",e => {
+  currentId = e.target.value;
+  renderAll();
+});
+
+function newProject() {
+  const name = prompt("Enter couple or project name:");
+  if (name===null) return;
+  const p = createProject(name.trim() || "Untitled project");
+  projects.push(p);
+  currentId = p.id;
+  renderAll();
+  persist();
+}
+
+function renameProject() {
+  const name = prompt("Rename this project:",current().name);
+  if (name===null || !name.trim()) return;
+  current().name = name.trim();
+  renderAll();
+  persist();
+}
+
+function deleteProject() {
+  if (projects.length===1) {
+    alert("Keep at least one project in your workspace.");
+    return;
+  }
+  if (!confirm("Delete this project and all its references?")) return;
+  projects = projects.filter(p=>p.id!==currentId);
+  currentId = projects[0].id;
+  renderAll();
+  persist();
+}
+
+function saveProject() {
+  const p = current();
+  p.name = projectName.value.trim() || "Untitled project";
+  p.direction = direction.value;
+  p.date = shootDate.value;
+  p.location = location.value;
+  p.brief = brief.value;
+  p.notes = notes.value;
+  renderSelect();
+  persist();
+}
+
+["projectName","direction","shootDate","location","brief","notes"].forEach(id => {
+  document.getElementById(id).addEventListener("input",() => {
+    const p=current();
+    if (id==="projectName") p.name=projectName.value;
+    if (id==="direction") p.direction=direction.value;
+    if (id==="shootDate") p.date=shootDate.value;
+    if (id==="location") p.location=location.value;
+    if (id==="brief") p.brief=brief.value;
+    if (id==="notes") p.notes=notes.value;
+    renderSelect();
+    scheduleSave();
+  });
+});
+
+function exportPDF() {
+  saveProject();
+  window.print();
+}
+
+load();
+</script>
 </body>
 </html>
